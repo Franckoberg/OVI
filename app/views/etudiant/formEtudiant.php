@@ -17,12 +17,11 @@
 				<div class="col-md-3">
 					<div class="text-center">
 						<div id="prev"></div>
-						 <img class="img-circle" src="<?php  echo base_url('assets/img/lady_user-icon.png') ?>"
-							width="100" height="100" /> 
+						 <!-- <img class="img-circle" src="<?php  echo base_url('assets/img/lady_user-icon.png') ?>"	width="100" height="100" />  -->
 							
-						<h6>Upload une photo ..</h6>
+						<!-- <h6>Upload une photo ..</h6> -->
 
-						<input id="file" type="file" name="userimage" class="form-control" /> 
+						<!-- <input id="file" type="file" name="userimage" class="form-control" />  -->
 						<span class="text-danger"> </span>
 					</div>
 				</div>

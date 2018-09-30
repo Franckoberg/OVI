@@ -1,13 +1,13 @@
-<div class="container spacer">
+<div class="container">
+			<h1><strong>Statistique pour la session x</strong></h1>
 	<div class="bs-example">
 	    <div class="table-responsive">
-	      <table class="table" border="2px">
+	      <table class="table">
 	        <thead>
 	          <tr>
 	            <th>#</th>
 	            <th>Inscrit</th>
 	            <th>Periode</th>
-	            <th>Sexe</th>
 	          </tr>
 	        </thead>
 	        <tbody>
@@ -15,7 +15,6 @@
 	            <td>Nombres</td>
 	            <td>50</td>
 	            <td>05-sept-2018 a 23-sept-2018</td>
-	            <td></td>
 	          </tr>
 	        </tbody>
 	      </table>

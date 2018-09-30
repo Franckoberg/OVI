@@ -59,7 +59,7 @@ p {
 	<div id="container">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
-		<?php echo $error; ?>
+		<?php // echo $error; ?>
 	</div>
 </body>
 </html>

@@ -163,7 +163,14 @@ class User_model extends CI_Model {
 	*
 	*/
 	function findEtudiantById($id_etudiant){
-		$sql = 'SELECT * FROM etudiants WHERE id_etudiant = ? ';
+		$sql = 'SELECT etudiants.nom as etudiant_name, etudiants.prenom, etudiants.sexe, etudiants.nationalite, 
+		etudiants.date_naiss, etudiants.id_etudiant, etudiants.lieu_naiss, etudiants.matricule,   etudiants.adresse, 
+		etudiants.telephone, etudiants.email, etudiants.status_matrimonial, etudiants.group_sanguin, etudiants.persapp,
+		etudiants.ugctelephone, etudiants.ugctelephone_a, etudiants.ugcadresse, etudiants.ugcemail, etudiants.prob_sante,
+		etudiants.raisonetude, etudiants.sondage, etudiants.entitenom, etudiants.active, options.nom as option_name FROM etudiants_options 
+		INNER JOIN etudiants ON etudiants.id_etudiant = etudiants_options.id_etudiant
+		INNER JOIN options ON options.id_option = etudiants_options.id_option
+		WHERE etudiants.id_etudiant = ? ';
 		$req = $this->db->query($sql, array($id_etudiant));
 
 		if ($req->num_rows() === 1 ) {
@@ -172,6 +179,31 @@ class User_model extends CI_Model {
 			return $req->result_object();
 			// return false;
 		}
+	}
+
+	// function imgTest (){
+	// 	$pho = $this->upload->file_name;  //var_dump($pho);
+	// 	$data = array(
+	// 		'id' => '',
+	// 		'foto' => $pho
+	// 		);
+
+	// 	return $this->db->insert('imgTest', $data);
+	// }
+
+	function updateEtudiant ( $inputNom , $inputPrenom, $sexe, $inputNationalite, $date_naiss, $inputLieuNaissance, $inputAdresse, $inputTelephone, $_status_matri, $inputpersapp, $inputTelephone_ua, $inputAdresse_uc, $inputEmail, $inputsante, $groupe_sang, $inputTelephone_ub, $inputEmail_u, $raisonetude,  $pub_ovi, $inputPersNom) {
+		$id_etudiant = $this->input->post('id_etudiant');
+		$pho = $this->upload->file_name;  //var_dump($pho);
+
+		$sql = 'UPDATE etudiants SET foto = ?, nom = ?, prenom = ?, sexe = ?, nationalite = ?, date_naiss = ?,
+		 lieu_naiss = ?, adresse = ?, telephone = ?, email = ?, status_matrimonial = ?, prob_sante = ?, 
+		 group_sanguin = ?, persapp = ?, ugctelephone = ?, ugctelephone_a = ?, ugcadresse = ?, ugcemail = ?,
+		  raisonetude = ?, sondage = ?, entitenom = ? WHERE id_etudiant = ?';
+
+		return $req = $this->db->query($sql, array($pho, $inputNom , $inputPrenom, $sexe, $inputNationalite,
+		 $date_naiss, $inputLieuNaissance, $inputAdresse, $inputTelephone, $_status_matri, $inputpersapp,
+		  $inputTelephone_ua, $inputAdresse_uc, $inputEmail, $inputsante, $groupe_sang, $inputTelephone_ub, 
+		  $inputEmail_u, $raisonetude,  $pub_ovi, $inputPersNom, $id_etudiant));
 	}
 	
 }

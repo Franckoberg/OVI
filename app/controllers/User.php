@@ -20,9 +20,9 @@ class User extends CI_Controller {
 		$this->load->library('Pdf_report');
 	}
 
-	function User() {
-        parent::CI_Exceptions();
-    }
+	// function User() {
+ //        parent::CI_Exceptions();
+ //    }
 
 	/**
 	* function index()
@@ -840,9 +840,184 @@ class User extends CI_Controller {
 	*
 	*/
 	function activeUser() {
+		$data = new StdClass();
 		$id_etudiant = $this->uri->segment(3);
 		$this->user->activeUser($id_etudiant);
-		// $this->liste_inscrir();
-		$this->load->view('pdfOutput');
+		$userlist = $this->user->findEtudiantById($id_etudiant);
+
+		$data->userlist = $userlist;
+
+		$this->load->view('templates/header');
+		$this->load->view('etudiant/editEtudiant', $data);
+		$this->load->view('templates/footer');
 	}
+
+	// function imgTest (){
+	// 	$data = new stdClass();
+	// 	$config['upload_path']      = 'assets/img/';
+	// 	$config['allowed_types']    = 'gif|jpg|png|GIF|JPG|PNG';
+	// 	$config['max_size']         = '2048';
+	// 	$config['max_width']        = '1024';
+	// 	$config['max_height']       = '1024';
+	// 	$config['file_ext_tolower'] = true;
+	// 	$config['encrypt_name']     = true;
+
+	// 	$this->load->library('upload', $config);
+
+	// 	$this->upload->initialize($config);
+
+	// 	if ( ! $this->upload->do_upload('userimage') ) {
+	// 		// $_SESSION['flash']['danger'] = 'l\'images n\'a pas pu etre upload il faut un format : gif | jpg | png | jpeg ' ;
+	// 		$error = array('error' => $this->upload->display_errors());
+	// 	} else {
+	// 		$data =  $this->upload->data();					
+	// 	}
+	// 	    $this->user->imgTest($data);
+
+	// 		$this->load->view('templates/header');    
+	// 		$this->load->view('etudiant/addFoto');    
+	// 		$this->load->view('templates/footer');    
+	// }
+
+	/**
+	* function updateEtudiant
+	* @access public
+	* @return void
+	*
+	*
+	*/
+	function updateEtudiant() {
+		$data = new stdClass();
+		
+		// liste de roles
+		// $question = $this->user_question();
+		// $data->question = $question;
+		if ($this->input->post('save')) {
+			if ( 
+				!empty($this->input->post('inputNom')) AND !empty($this->input->post('inputPrenom')) AND
+				!empty($this->input->post('sexe_type')) AND !empty($this->input->post('inputNationalite')) AND
+				!empty($this->input->post('date_naiss')) AND !empty($this->input->post('inputLieuNaissance')) AND
+				!empty($this->input->post('inputAdresse')) AND !empty($this->input->post('inputTelephone')) AND
+				// !empty($this->input->post('inputQuestion')) AND !empty($this->input->post('inputRepons')) AND
+				!empty($this->input->post('_status_matri')) AND !empty($this->input->post('inputpersapp')) AND
+				!empty($this->input->post('inputTelephone_ua')) AND !empty($this->input->post('inputAdresse_uc')) 
+				AND !empty($this->input->post('raisonetude'))
+
+			) {
+				$date_naiss = $this->input->post('date_naiss');
+				if( $this->age_valid($date_naiss) ) {
+
+					$inputNom 	= $this->input->post('inputNom');
+					$inputPrenom 	= $this->input->post('inputPrenom');
+					$sexe = $this->input->post('sexe_type');
+					$inputNationalite = $this->input->post('inputNationalite');
+					$date_naiss = $this->input->post('date_naiss');
+					$inputLieuNaissance = $this->input->post('inputLieuNaissance');
+					$inputAdresse = $this->input->post('inputAdresse');
+					$inputTelephone = $this->input->post('inputTelephone');
+					$inputQuestion = $this->input->post('inputQuestion');
+					$inputRepons = $this->input->post('inputRepons');
+					$_status_matri = $this->input->post('_status_matri');
+					$inputpersapp = $this->input->post('inputpersapp');
+					$inputTelephone_ua = $this->input->post('inputTelephone_ua');
+					$inputAdresse_uc = $this->input->post('inputAdresse_uc');
+
+					// $option_name = $this->input->post('option_name');
+
+					$inputEmail = $this->input->post('inputEmail');		
+					$inputsante = $this->input->post('inputsante');
+					$groupe_sang = $this->input->post('groupe_sang');				
+					$inputTelephone_ub = $this->input->post('inputTelephone_ub');				
+					$inputEmail_u = $this->input->post('inputEmail_u');				
+
+					$raisonetude = $this->input->post('raisonetude');
+					$pub_ovi = $this->input->post('pub_ovi');
+					$inputPersNom = $this->input->post('inputPersNom');
+
+					$this->form_validation->set_rules('inputNom', 'nom', 'required|min_length[4]|max_length[18]|callback_ckeck_format_nom');
+					$this->form_validation->set_rules('inputPrenom', 'prenom', 'required|min_length[4]|max_length[25]|callback_ckeck_format_prenom');
+					$this->form_validation->set_rules('sexe_type', 'sexe', 'alpha|callback_ckeck_sexe_found');
+
+					// $this->form_validation->set_rules('inputRepons', 'votre reponse', 'required');
+					// $this->form_validation->set_rules('inputQuestion', 'question secret', 'required|callback_is_question_valid');
+
+					$this->form_validation->set_rules('groupe_sang', 'groupe sanguin', 'callback_ckeck_goupesanguin_found');
+					// $this->form_validation->set_rules('inputTelephone_p', 'telephone', 'required|min_length[8]|callback_ckeck_format_telephoneA');
+					$this->form_validation->set_rules('inputNationalite', 'nationalite', 'required|min_length[6]|max_length[20]|alpha');
+					$this->form_validation->set_rules('inputpersapp', 'nom', 'required|min_length[4]|callback_ckeck_format_nom_p');
+					$this->form_validation->set_rules('inputPersNom', 'nom', 'min_length[4]|callback_ckeck_format_nom_p_n');
+					$this->form_validation->set_rules('inputTelephone', 'telephone', 'required|min_length[8]|callback_ckeck_format_telephone');
+					$this->form_validation->set_rules('inputTelephone_ua', 'telephone', 'required|min_length[8]|callback_ckeck_format_telephone_ua');
+					// $this->form_validation->set_rules('inputTelephone_ub', 'telephone', 'min_length[8]|callback_ckeck_format_telephone_ub');
+					$this->form_validation->set_rules('inputAdresse_uc', 'adresse', 'required|min_length[6]');
+					$this->form_validation->set_rules('inputsante', 'probleme medical', 'alpha_numeric_spaces');
+					$this->form_validation->set_rules('inputLieuNaissance', 'lieu de naissance', 'alpha_dash');
+					$this->form_validation->set_rules('date_naiss', 'date de naissance', 'required');
+
+					// $this->form_validation->set_rules('inputEmail', 'email', 'valid_email');
+					// $this->form_validation->set_rules('inputEmail_u', 'email', 'valid_email');
+					
+
+					if($this->form_validation->run() == FALSE) {
+
+						$this->load->view('templates/header');
+						$this->load->view('etudiant/editEtudiant', $data);
+						$this->load->view('templates/footer');
+					} else {
+						$config['upload_path']      = 'assets/img/';
+						$config['allowed_types']    = 'gif|jpg|png|GIF|JPG|PNG';
+						$config['max_size']         = '2048';
+						$config['max_width']        = '1024';
+						$config['max_height']       = '1024';
+						$config['file_ext_tolower'] = true;
+						$config['encrypt_name']     = true;
+
+						$this->load->library('upload', $config);
+
+						$this->upload->initialize($config);
+
+						if ( ! $this->upload->do_upload('userimage') ) {
+							// $_SESSION['flash']['danger'] = 'l\'images n\'a pas pu etre upload il faut un format : gif | jpg | png | jpeg ' ;
+							$error = array('error' => $this->upload->display_errors());
+						} else {
+							$data =  $this->upload->data();					
+						} 
+						// $this->user->updateEtudiant($data);
+						// $code = $this->randomCode($inputNom,$inputPrenom);
+						$pho = $this->upload->file_name; var_dump($pho);
+						$result = $this->user->updateEtudiant( $inputNom , $inputPrenom, $sexe, $inputNationalite, $date_naiss, $inputLieuNaissance, $inputAdresse, $inputTelephone, $_status_matri, $inputpersapp, $inputTelephone_ua, $inputAdresse_uc, $inputEmail, $inputsante, $groupe_sang, $inputTelephone_ub, $inputEmail_u, $raisonetude,  $pub_ovi, $inputPersNom);
+						
+						if ($result) {
+							$_SESSION['flash']['success'] = 'Enregistrement reussie ';
+							// redirect('success',$data);
+							$this->load->view('templates/header');
+							$this->load->view('index');
+							$this->load->view('templates/footer');
+						} else { 
+							$_SESSION['flash']['success'] = 'echec  ';
+							$this->load->view('templates/header');
+							$this->load->view('etudiant/editEtudiant', $data);
+							$this->load->view('templates/footer');
+
+						}
+					}
+				} else {
+					$_SESSION['flash']['danger'] = 'Vous devez avoir au moins 15 ans pour inscrire  ';
+					$this->load->view('templates/header');
+					$this->load->view('etudiant/editEtudiant', $data);
+					$this->load->view('templates/footer');
+				}
+			} else {
+				$_SESSION['flash']['danger'] = 'Remplis tous les champs svp!';
+				$this->load->view('templates/header');
+				$this->load->view('etudiant/editEtudiant', $data);
+				$this->load->view('templates/footer');
+			}
+		} else {
+			$this->load->view('templates/header');
+			$this->load->view('etudiant/editEtudiant', $data);
+			$this->load->view('templates/footer');
+		}
+	} 
+
 }

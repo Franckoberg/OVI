@@ -1,19 +1,19 @@
  <!-- style perso -->
     <link href="<?php echo base_url('assets/css/style.css'); ?>" rel="stylesheet">
 
-  <!-- <script type='text/javascript' src='//code.jquery.com/jquery-1.9.1.js'></script>  -->
-  <script type='text/javascript' src='<?php echo base_url('assets/js/jquery-1.9.1.js'); ?>'></script> 
+
 
 <!-- Menus -->
 	<div class="container">
 		<h1 style="font-family: time new roman; ">One vision institute</h1>
+
 		<div class="row">
 			<div class="exempleresult_ref_log" id="exempleresult_ref_logcontrole"></div>
 			 <div class="exempleresult_ref">
 			 	<script>tjsTutoExecute("form-controle");</script>
 			<!-- left column -->
 			<!-- <form class="form-horizontal" action="<?php //echo base_url('user/inscrir');?>" method="post" accept-charset="utf-8" enctype="multipart/form-data" > -->
-				 <?php echo form_open_multipart('user/updateEtudiant','class="form-horizontal"'); ?> 
+				 <?php echo form_open_multipart('user/updateEtudiant/id','class="form-horizontal"'); ?> 
 				<div class="col-md-3">
 					<div class="text-center">
 						<div id="prev"></div>
@@ -59,19 +59,10 @@
 							<input type="text" class="form-control" id="Code-ins" placeholder="20170901-00001" />
 						</div>
 					</div> -->
-					<?php foreach ($userlist as $key ) : ?>
-					<div class="form-group row">
-						<label for="matricule" class="col-sm-2 col-form-label">Matricule</label>
-						<div class="col-sm-8">
-							<input type="hidden" class="form-control" name="id_etudiant" id="id_etudiant" value="<?php echo $key->id_etudiant;  ?>" />
-							<input type="text" class="form-control" name="matricule" id="matricule" value="<?php echo $key->matricule;  ?>" placeholder="Nom" disabled />
-						</div>
-					</div>
-
 					<div class="form-group row">
 						<label for="inputNom" class="col-sm-2 col-form-label">*Nom</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="inputNom" id="inputNom" value="<?php echo $key->etudiant_name;  ?>" placeholder="Nom" required />
+							<input type="text" class="form-control" name="inputNom" id="inputNom" value="<?php echo set_value('inputNom'); ?>" placeholder="Nom" required />
 							<span class="text-danger"> <?php echo form_error('inputNom'); ?></span>
 							 <span class="text-danger" id="missNom"></span> 
 						</div>
@@ -80,41 +71,30 @@
 					<div class="form-group row">
 						<label for="inputPrenom" class="col-sm-2 col-form-label">*Pr&eacutenom</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="inputPrenom" id="inputPrenom" value="<?php echo $key->prenom;  ?>" placeholder="Prenom" required />
+							<input type="text" class="form-control" name="inputPrenom" id="inputPrenom" value="<?php echo set_value('inputPrenom'); ?>" placeholder="Prenom" required />
 							 <span class="text-danger"><?php echo form_error('inputPrenom'); ?></span>
 							 <span class="text-danger" id="missPrenom"></span> 
 						</div>
 					</div>
 
-					<div class="form-group row">
-					<?php if( $key->sexe == 'Masculin'): ?>
+				
+					<div class="form-group row"> 
 						<label for="inputSexe" class="col-sm-2 col-form-label radio-inline"><strong>*Sexe</strong></label>
-					    <input id="features1" name="sexe_type" type="radio" value="<?php echo $key->sexe; ?>" checked/>
+					    <input id="features1" name="sexe_type" type="radio" value="Masculin" required />
 					    <input name="_features" type="hidden" value="on" />
 					    <label  for="features1">Masculin</label>
-
-					    <input id="features2" name="sexe_type" type="radio" value="<?php echo $key->sexe; ?>" />
+					 
+					    <input id="features2" name="sexe_type" type="radio" value="Feminin" required />
 					    <input name="_features" type="hidden" value="on" />
 					    <label for="features2">Feminin</label>
 					    <span class="text-danger" id="missSexe_type"></span>
-					<?php else: ?>
-						<label for="inputSexe" class="col-sm-2 col-form-label radio-inline"><strong>*Sexe</strong></label>
-					    <input id="features1" name="sexe_type" type="radio" value="<?php echo $key->sexe; ?>" />
-					    <input name="_features" type="hidden" value="on" />
-					    <label  for="features1">Masculin</label>
-											 
-					    <input id="features2" name="sexe_type" type="radio" value="<?php echo $key->sexe; ?>" checked/>
-					    <input name="_features" type="hidden" value="on" />
-					    <label for="features2">Feminin</label>
-					    <span class="text-danger" id="missSexe_type"></span>
-					<?php endif ?>
 					</div>&nbsp; &nbsp;
 
 					<div class="form-group row">
 						<label for="inputNationalite" class="col-sm-2 col-form-label">*Nationalit&eacute
 						</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="inputNationalite" id="inputNationalite" value="<?php echo $key->nationalite;  ?>" placeholder="Nationalite" required /> 
+							<input type="text" class="form-control" name="inputNationalite" id="inputNationalite" value="<?php echo set_value('inputNationalite'); ?>" placeholder="Nationalite" required /> 
 							<span class="text-danger"><?php echo form_error('inputNationalite'); ?></span>
 							<span class="text-danger" id="missNationalite"></span> 
 						</div>
@@ -123,8 +103,8 @@
 					<div class="form-group row">
 						<label for="date_naiss" class="col-sm-2 col-form-label">*Date
 							de Naissance</label>
-						<div class="col-sm-8"><?php // echo $key->date_naiss; ?>
-							<input type="date" class="form-control" id="date_naiss" name="date_naiss" value="<?php echo $key->date_naiss; ?>" placeholder="aa-mm-jj" required /> 
+						<div class="col-sm-8">
+							<input type="date" class="form-control" id="date_naiss" name="date_naiss" placeholder="aa-mm-jj" required /> 
 							<span class="text-danger" id="missDate_naiss"></span>
 						</div>
 					</div>
@@ -133,7 +113,7 @@
 						<label for="inputLieuNaissance" class="col-sm-2 col-form-label">*Lieu
 							de Naissance</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="inputLieuNaissance" name="inputLieuNaissance" placeholder="Lieu de Naissance" value="<?php echo $key->lieu_naiss;  ?>" required />
+							<input type="text" class="form-control" id="inputLieuNaissance" name="inputLieuNaissance" placeholder="Lieu de Naissance" required />
 							<span class="text-danger" id="missLieuNaiss"></span>
 						</div>
 					</div>
@@ -141,14 +121,14 @@
 					<div class="form-group row">
 						<label for="inputAdresse" class="col-sm-2 col-form-label">*Adresse</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="inputAdresse" placeholder="Adresse" name="inputAdresse"  value="<?php echo $key->adresse;  ?>" required />
+							<input type="text" class="form-control" id="inputAdresse" placeholder="Adresse" name="inputAdresse" required />
 							<span class="text-danger" id="missAdresse_p"></span>
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="inputTelephone" class="col-sm-2 col-form-label">*T&eacutelephone</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="inputTelephone" placeholder="Telephone" name="inputTelephone" value="<?php echo $key->telephone;  ?>" required /> 
+							<input type="text" class="form-control" id="inputTelephone" placeholder="Telephone" name="inputTelephone" required /> 
 							 <span class="text-danger"><?php echo form_error('inputTelephone'); ?></span>
 							<span class="text-danger" id="missInputTelephone"></span>
 						</div>
@@ -156,16 +136,37 @@
 					<div class="form-group row">
 						<label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="inputEmail" placeholder="Email" name="inputEmail" value="<?php echo $key->email;  ?>" />
+							<input type="text" class="form-control" id="inputEmail" placeholder="Email" name="inputEmail" />
 							<span class="text-danger"><?php echo form_error('inputEmail'); ?></span>
+						</div>
+					</div>
+
+					<div class="form-group row">
+		                <label for="inputQuestion" class="col-sm-2 col-form-label"> </label>
+						<div class="col-sm-8">					   
+						    <select class="form-control" id="inputQuestion" name="inputQuestion" required>
+						    	<option> Question secret </option>
+						    	<?php foreach ($question as $rows) :?> 
+						      	<option value="<?php echo $rows->id_question ?>" ><?php echo $rows->question; ?></option>
+								<span class="text-danger"><?php echo form_error('inputQuestion'); ?></span>
+								<span class="text-danger" id="missInputQuestion"></span> 
+						        <?php endforeach?>
+						    </select>
+						</div>			
+					</div>
+					<div class="form-group row">
+						<label for="inputRepons" class="col-sm-2 col-form-label"></label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="inputRepons" id="inputRepons" value="<?php // echo set_value('inputRepons'); ?>" placeholder="Votre reponse" required /> 
+							<span class="text-danger"><?php echo form_error('inputRepons'); ?></span>
+							<span class="text-danger" id="missInputRepons"></span> 
 						</div>
 					</div>
 
 					<h2>*Status Matrimonial</h2>
  
 					<div>
-					   <?php if( $key->status_matrimonial == 'Célibataire'): ?>
-					    <input id="celi-stat" name="_status_matri" type="radio" value="Célibataire" checked/>
+					    <input id="celi-stat" name="_status_matri" type="radio" value="Célibataire" required/>
 					    <input name="_status-m" type="hidden" value="on" />
 					    <label for="celi-stat">C&eacutelibataire</label>
 					 
@@ -176,34 +177,6 @@
 					    <input id="fian-stat" name="_status_matri" type="radio" value="Fiancé" required/>
 					    <input name="_status-m" type="hidden" value="on" />
 					    <label for="fian-stat">Fianc&eacute</label>
-
-					   <?php elseif($key->status_matrimonial == 'Marié'): ?>
-					   <input id="celi-stat" name="_status_matri" type="radio" value="Célibataire" required/>
-					    <input name="_status-m" type="hidden" value="on" />
-					    <label for="celi-stat">C&eacutelibataire</label>
-					 
-					    <input id="mari-stat" name="_status_matri" type="radio" value="Marié" checked/>
-					    <input name="_status-m" type="hidden" value="on" />
-					    <label for="mari-stat">Mari&eacute</label>
-					 
-					    <input id="fian-stat" name="_status_matri" type="radio" value="Fiancé" required/>
-					    <input name="_status-m" type="hidden" value="on" />
-					    <label for="fian-stat">Fianc&eacute</label>
-
-					   <?php else: ?>
-					   <input id="celi-stat" name="_status_matri" type="radio" value="Célibataire" required/>
-					    <input name="_status-m" type="hidden" value="on" />
-					    <label for="celi-stat">C&eacutelibataire</label>
-					 
-					    <input id="mari-stat" name="_status_matri" type="radio" value="Marié" required/>
-					    <input name="_status-m" type="hidden" value="on" />
-					    <label for="mari-stat">Mari&eacute</label>
-					 
-					    <input id="fian-stat" name="_status_matri" type="radio" value="Fiancé" checked/>
-					    <input name="_status-m" type="hidden" value="on" />
-					    <label for="fian-stat">Fianc&eacute</label>
-
-					   <?php endif ?>
 					    <span class="text-danger" id="miss_status_matri"></span>
 					</div> <span class="text-danger" id="miss_status_matri"></span>&nbsp; &nbsp; &nbsp; &nbsp; <br> </br>
 
@@ -212,7 +185,7 @@
 						<div class="col-sm-8">
 							<!-- <input type="text" class="form-control" name="inputsante" id="inputsante" placeholder="" /> 
 							<span class="text-danger" errors="*{profession}"> </span> -->
-							<textarea class="form-control" name="inputsante" id="inputsante" value="<?php echo $key->prob_sante;  ?>" required><?= $key->prob_sante?></textarea>
+							<textarea class="form-control" name="inputsante" id="inputsante" value="<?php echo set_value('inputsante'); ?>" required></textarea>
 							<span class="text-danger"> <?php echo form_error('inputsante'); ?> </span>
 							<span class="text-danger" id="missInputsante"></span>
 						</div>
@@ -221,17 +194,38 @@
 					<div class="form-group row"> <?php // echo set_value('groupe_sang'); ?>
 						<label for="inputSexe" class="col-sm-2 col-form-label radio-inline"><strong>Groupe sanguin</strong>
 						</label>
-						<?php if(!empty($key->group_sanguin) ): ?>
-					    <input id="groupe-b" name="groupe_sang" type="radio" value="O-" checked />
+					    
+					    <input id="groupe-a" name="groupe_sang" type="radio" value="A+" required/>
+					    <input name="_groupe_sanguin" type="hidden" value="on" />
+					    <label  for="groupe-a">A+</label>&nbsp; &nbsp;
+					 
+					    <input id="groupe-b" name="groupe_sang" type="radio" value="O-" />
 					    <input name="_groupe_sanguin" type="hidden" value="on" />
 					    <label for="groupe-b">O-</label>&nbsp; &nbsp;
-						<?php endif ?>
-						<?php if(!empty($key->group_sanguin)): ?>
-					     <input id="groupe-c" name="groupe_sang" type="radio" value="B+" checked />
+
+					     <input id="groupe-c" name="groupe_sang" type="radio" value="B+" />
 					    <input name="_groupe_sanguin" type="hidden" value="on" />
 					    <label for="groupe-c">B+</label>&nbsp; &nbsp;
-						<?php endif ?>
-						
+
+					    <input id="groupe-a" name="groupe_sang" type="radio" value="O+" />
+					    <input name="_groupe_sanguin" type="hidden" value="on" />
+					    <label  for="groupe-a">O+</label>&nbsp; &nbsp;
+
+					    <input id="groupe-c" name="groupe_sang" type="radio" value="B-" />
+					    <input name="_groupe_sanguin" type="hidden" value="on" />
+					    <label for="groupe-c">B-</label>&nbsp; &nbsp;
+
+					    <input id="groupe-d" name="groupe_sang" type="radio" value="A-" />
+					    <input name="_groupe_sanguin" type="hidden" value="on" />
+					    <label for="groupe-d">A-</label>
+
+					    <input id="groupe-d" name="groupe_sang" type="radio" value="AB-" />
+					    <input name="_groupe_sanguin" type="hidden" value="on" />
+					    <label for="groupe-d">AB-</label>
+
+					    <input id="groupe-d" name="groupe_sang" type="radio" value="AB+" />
+					    <input name="_groupe_sanguin" type="hidden" value="on" />
+					    <label for="groupe-d">AB+</label>
 					    <span class="text-danger"> <?php echo form_error('groupe_sang'); ?> </span>
 					    <span class="text-danger" id="missGroupe_sang"></span>
 					</div> &nbsp; &nbsp;
@@ -241,7 +235,7 @@
 					<div class="form-group row">
 						<label for="inputpersapp" class="col-sm-2 col-form-label">*Personne à appeler</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="inputpersapp" id="inputpersapp" value="<?php echo $key->persapp;  ?>" placeholder="Nom de la (les) personne(s)" required />
+							<input type="text" class="form-control" name="inputpersapp" id="inputpersapp" value="<?php echo set_value('inputpersapp'); ?>" placeholder="Nom de la (les) personne(s)" required />
 							 <span class="text-danger"><?php echo form_error('inputpersapp'); ?></span>
 							 <span class="text-danger" id="missInputpersapp"></span>
 						</div>
@@ -250,7 +244,7 @@
 					<div class="form-group row">
 						<label for="inputTelephone_ua" class="col-sm-2 col-form-label">*T&eacutelephone</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="inputTelephone_ua" id="inputTelephone_ua" value="<?php echo $key->ugctelephone_a; ?>" placeholder="Telephone" required />
+							<input type="text" class="form-control" name="inputTelephone_ua" id="inputTelephone_ua" value="<?php echo set_value('inputTelephone_ua'); ?>" placeholder="Telephone" required />
 							 <span class="text-danger"><?php echo form_error('inputTelephone_ua'); ?></span>
 							 <span class="text-danger" id="missInputTelephone_ua"></span>
 						</div>
@@ -258,7 +252,7 @@
 					<div class="form-group row">
 						<label for="inputTelephone_ub" class="col-sm-2 col-form-label">T&eacutelephone</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="inputTelephone_ub" id="inputTelephone_ub" value="<?php echo $key->ugctelephone?>" placeholder="Telephone"  />
+							<input type="text" class="form-control" name="inputTelephone_ub" id="inputTelephone_ub" value="<?php echo set_value('inputTelephone_ub'); ?>" placeholder="Telephone"  />
 							 <span class="text-danger"><?php echo form_error('inputTelephone_ub'); ?></span>
 							 <span class="text-danger" id="missInputTelephone_ub"></span>
 						</div>
@@ -266,7 +260,7 @@
 					<div class="form-group row">
 						<label for="inputAdresse_uc" class="col-sm-2 col-form-label">*Adresse</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="inputAdresse_uc" id="inputAdresse_uc" value="<?php echo $key->ugcadresse; ?>" placeholder="Adresse" required />
+							<input type="text" class="form-control" name="inputAdresse_uc" id="inputAdresse_uc" value="<?php echo set_value('inputAdresse_uc'); ?>" placeholder="Adresse" required />
 							 <span class="text-danger" errors="*{email}"><?php echo form_error('inputAdresse_uc'); ?></span>
 							 <span class="text-danger" id="missInputAdresse_uc"></span>
 						</div>
@@ -275,7 +269,7 @@
 					<div class="form-group row">
 						<label for="inputEmail_u" class="col-sm-2 col-form-label">Email</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="inputEmail_u" id="inputEmail_u" value="<?php echo $key->ugcemail; ?>" placeholder="Email" />
+							<input type="text" class="form-control" name="inputEmail_u" id="inputEmail_u"  placeholder="Email" />
 							<span class="text-danger"><?php echo form_error('inputEmail_u'); ?></span> 
 							<span class="text-danger" id="missInputEmail_u"></span>
 						</div>
@@ -285,9 +279,13 @@
 		                <label for="option_name" class="col-sm-2 col-form-label"> </label>
 						<div class="col-sm-8">					   
 						    <select class="form-control" id="option_name" name="option_name" required>
-						      	<option value="<?php echo $key->option_name ?>" ><?php echo $key->option_name; ?></option>
+						    	<option> *Options </option>
+						    	<?php $option = $this->user->options(); ?>
+						    	<?php foreach ($option as $rows) :?> 
+						      	<option value="<?php echo $rows->id_option ?>" ><?php echo $rows->nom; ?></option>
 								<span class="text-danger"><?php echo form_error('option_name'); ?></span>
 								<span class="text-danger" id="missoption_name"></span> 
+						        <?php endforeach?>
 						    </select>
 						</div>			
 					</div>
@@ -295,11 +293,14 @@
 					<!-- .col-xs-6 .col-sm-4 -->
 
 				    <!-- <div class="form-group row"> -->
-				    <p style="font-family: time new roman; font-size: 20px;">Pourquoi choisissez-vous <b>OVI</b> pour etudier? </p>
+				    	<p style="font-family: time new roman; font-size: 20px;">Pourquoi choisissez-vous <b>OVI</b> pour etudier? </p>
 				    <!-- </div> -->
 				    <div class="form-group row">
+						<!-- <label for="inputsante" class="col-sm-2 col-form-label">Problemes m&eacutedicaux</label> -->
 						<div class="col-sm-10">
-							<textarea class="form-control" name="raisonetude" id="raisonetude" value="<?php echo $key->raisonetude; ?>"><?= $key->raisonetude; ?></textarea>
+							<!-- <input type="text" class="form-control" name="inputsante" id="inputsante" placeholder="" /> 
+							<span class="text-danger" errors="*{profession}"> </span> -->
+							<textarea class="form-control" name="raisonetude" id="raisonetude" value="<?php echo set_value('raisonetude'); ?>"></textarea>
 							<span class="text-danger"> <?php echo form_error('raisonetude'); ?> </span>
 							<span class="text-danger" id="missraisonetude"></span>
 						</div>
@@ -387,7 +388,7 @@
 					<p style="font-family: time new roman; font-size: 20px;">Nom de la personne de r&eacuteference ou de l'entit&eacute </p>
 					<div class="form-group row">
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="inputPersNom" id="inputPersNom" value="<?php echo $key->entitenom; ?>"  placeholder="Nom" required />
+							<input type="text" class="form-control" name="inputPersNom" id="inputPersNom"  placeholder="Nom" required />
 							 <span class="text-danger"><?php echo form_error('inputPersNom'); ?></span>
 							 <span class="text-danger" id="missInputpersNom"></span>
 						</div>
@@ -401,7 +402,7 @@
 							<span></span> <input type="reset" class="btn btn-default" value="Cancel" />
 						</div>
 					</div>
-				<?php endforeach ?>
+
 				</div>
 			</form>
 		</div>
